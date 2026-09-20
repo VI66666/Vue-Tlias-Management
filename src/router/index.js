@@ -1,0 +1,30 @@
+import { createRouter, createWebHistory } from 'vue-router'
+
+import IndexView from '@/views/index/index.vue'
+import ClazzView from '@/views/clazz/index.vue'
+import Deptview from '@/views/dept/index.vue'
+import EmpView from '@/views/emp/index.vue'
+import Logview from'@/views/log/index.vue'
+import StuView from '@/views/stu/index.vue'
+import EmpReportView from '@/views/report/emp/index.vue'
+import StuReportView from '@/views/report/stu/index.vue'
+import LayoutView from '@/views/layout/index.vue'
+import Loginview from '@/views/login/index.vue'
+
+const router = createRouter({
+  history: createWebHistory(import.meta.env.BASE_URL),
+  routes: [
+    {path: '/index',name: 'index',component: IndexView},
+    {path: '/clazz',name: 'clazz',component: ClazzView},
+    {path: '/dept',name: 'dept',component: Deptview},
+    {path: '/emp',name: 'emp',component: EmpView},
+    {path: '/log',name: 'log',component: Logview},
+    {path: '/stu',name: 'stu',component: StuView},
+    {path: '/empReport',name: 'empReport',component: EmpReportView},
+    {path: '/stuReport',name: 'stuReport',component: StuReportView},
+    {path: '/layout',name: 'layout',component: LayoutView},
+    {path: '/login',name: 'login',component: Loginview},
+  ]
+})
+
+export default router
