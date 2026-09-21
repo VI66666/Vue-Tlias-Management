@@ -1,7 +1,5 @@
 <script setup>
 import { HelpFilled, HomeFilled, UserFilled } from '@element-plus/icons-vue';
-import router from '../../router';
-
 
 </script>
 
@@ -40,7 +38,7 @@ import router from '../../router';
 
 
             <!-- 班级管理菜单 -->
-            <el-sub-menu index="/manage">
+            <el-sub-menu index="/manag e">
               <template #title>
                 <el-icon>
                   <Menu />
