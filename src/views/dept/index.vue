@@ -16,14 +16,31 @@ const search = async () => {
 }
 
 const deptList = ref([])
+
+// dialog对话框
+const dialogFormVisible = ref(false)
+const formTitle = ref('')
+const dept = ref({
+  name: ''
+})
+
+const save = () => {
+
+}
+
+const addDept = () => {
+  formTitle.value = '新增部门'
+  dialogFormVisible.value = true
+}
 </script>
 
 <template>
   <h1>部门管理</h1>
+  <!-- 按钮 -->
   <div class="container">
-    <el-button type="primary"> + 新增部门</el-button>
+    <el-button type="primary" @click="addDept"> + 新增部门</el-button>
   </div>
-
+  <!-- 表格 -->
   <div class="container">
     <el-table :data="deptList" border style="width: 100%">
       <el-table-column type="index" label="序号" width="100" align="center" />
@@ -41,6 +58,20 @@ const deptList = ref([])
       </el-table-column>
     </el-table>
   </div>
+  <!-- Dialog对话框 -->
+  <el-dialog v-model="dialogFormVisible" :title="formTitle" width="500">
+    <el-form :model="dept">
+      <el-form-item label="部门名称" label-width="80px">
+        <el-input v-model="dept.name" placeholder="请输入部门名称" />
+      </el-form-item>
+    </el-form>
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取消</el-button>
+        <el-button type="primary" @click="save">确认</el-button>
+      </div>
+    </template>
+  </el-dialog>
 </template>
 
 <style scoped>
