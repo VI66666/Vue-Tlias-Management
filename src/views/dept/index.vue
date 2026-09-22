@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-import { queryAllApi } from '@/api/dept'
+import { queryAllApi, addApi } from '@/api/dept'
+import { ElMessage } from 'element-plus'
 
 onMounted(() => {
   search()
@@ -20,18 +21,55 @@ const deptList = ref([])
 // dialog对话框
 const dialogFormVisible = ref(false)
 const formTitle = ref('')
+
 const dept = ref({
   name: ''
 })
 
-const save = () => {
-
+ // 保存部门
+const save = async () => {
+  // 校验表单
+  if (!deptFormRef.value) return
+  deptFormRef.value.validate(async (valid) => {
+    if (valid) {
+      // 新增部门
+      const res = await addApi(dept.value)
+      if (res.code) {
+        ElMessage.success('新增成功')
+        dialogFormVisible.value = false
+        search()
+      } else {
+        ElMessage.error(res.msg)
+      }
+    } else {
+      ElMessage.error('请填写完整信息')
+    }
+  })
 }
 
+// 新增部门
 const addDept = () => {
   formTitle.value = '新增部门'
+  dept.value = {
+    name: ''
+  }
   dialogFormVisible.value = true
+  // 重置表单
+  if (deptFormRef.value) {
+    deptFormRef.value.resetFields()
+  }
 }
+
+// 表单验证规则
+const rules = ref({
+  name: [
+    { required: true, message: '请输入部门名称', trigger: 'blur' }
+    , { min: 2, max: 10, message: '部门名称长度必须在2到10个字符之间', trigger: 'blur' }
+  ]
+})
+
+// 表单引用
+const deptFormRef = ref()
 </script>
 
 <template>
@@ -40,7 +78,7 @@ const addDept = () => {
   <div class="container">
     <el-button type="primary" @click="addDept"> + 新增部门</el-button>
   </div>
-  <!-- 表格 -->
+  <!-- 表单 -->
   <div class="container">
     <el-table :data="deptList" border style="width: 100%">
       <el-table-column type="index" label="序号" width="100" align="center" />
@@ -60,8 +98,8 @@ const addDept = () => {
   </div>
   <!-- Dialog对话框 -->
   <el-dialog v-model="dialogFormVisible" :title="formTitle" width="500">
-    <el-form :model="dept">
-      <el-form-item label="部门名称" label-width="80px">
+    <el-form :model="dept" :rules="rules" ref="deptFormRef">
+      <el-form-item label="部门名称" label-width="80px" prop="name">
         <el-input v-model="dept.name" placeholder="请输入部门名称" />
       </el-form-item>
     </el-form>
