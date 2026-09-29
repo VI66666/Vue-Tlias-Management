@@ -1,5 +1,27 @@
 <script setup>
 import { HelpFilled, HomeFilled, UserFilled } from '@element-plus/icons-vue';
+import { ref, onMounted } from 'vue';
+import { ElMessageBox, ElMessage } from 'element-plus';
+import { useRouter } from 'vue-router';
+const username = ref('');
+const router = useRouter()
+onMounted(() => {
+  username.value = JSON.parse(localStorage.getItem('loginUser')).name;
+})
+// 退出登录
+const logout = () => {
+  ElMessageBox.confirm('确认退出登录吗？', '退出登录确认', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  }).then(async () => {
+    localStorage.removeItem('loginUser')
+    ElMessage.success('退出登录成功')
+    router.push('/login')
+  }).catch(() => {
+    ElMessage.info('退出登录取消')
+  })
+}
 
 </script>
 
@@ -15,10 +37,10 @@ import { HelpFilled, HomeFilled, UserFilled } from '@element-plus/icons-vue';
               <EditPen />
             </el-icon> 修改密码 &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;
           </a>
-          <a href="">
+          <a href="javascript:void(0)" @click="logout">
             <el-icon>
               <SwitchButton />
-            </el-icon> 退出登录
+            </el-icon> 退出登录【{{ username }}】
           </a>
         </span>
       </el-header>
